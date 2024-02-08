@@ -6,6 +6,7 @@
 parameters:
     mail_from: 'sebastienpetit2733@gmail.com'
     frontend_url: '%env(FRONTEND_URL)%'
+    picture_path: '%kernel.project_dir%/public/images'
 
 services:
     # default configuration for services in *this* file
@@ -25,6 +26,10 @@ services:
     App\Service\MailerProvider:
         arguments:
             $mailFrom: '%mail_from%'
+
+    App\Service\UploadProvider:
+        arguments:
+            $picturePath: '%picture_path%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
