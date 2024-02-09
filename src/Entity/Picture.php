@@ -16,11 +16,11 @@ class Picture
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['experience'])]
+    #[Groups(['experience', 'techno', 'cv'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['experiences', 'experience'])]
+    #[Groups(['experiences', 'techno', 'cv'])]
     private ?string $fileName = null;
 
     #[ORM\Column]
@@ -32,6 +32,22 @@ class Picture
     #[ORM\ManyToOne(inversedBy: 'pictures')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Experience $experience = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pictures')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Portfolio $portfolio = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pictures')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Techno $techno = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pictures')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Formation $formation = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pictures')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Cv $cv = null;
 
     #[PrePersist]
     public function onPrePersist(): void
@@ -81,6 +97,54 @@ class Picture
     public function setExperience(?Experience $experience): static
     {
         $this->experience = $experience;
+
+        return $this;
+    }
+
+    public function getPortfolio(): ?Portfolio
+    {
+        return $this->portfolio;
+    }
+
+    public function setPortfolio(?Portfolio $portfolio): static
+    {
+        $this->portfolio = $portfolio;
+
+        return $this;
+    }
+
+    public function getTechno(): ?Techno
+    {
+        return $this->techno;
+    }
+
+    public function setTechno(?Techno $techno): static
+    {
+        $this->techno = $techno;
+
+        return $this;
+    }
+
+    public function getFormation(): ?Formation
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?Formation $formation): static
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    public function getCv(): ?Cv
+    {
+        return $this->cv;
+    }
+
+    public function setCv(?Cv $cv): static
+    {
+        $this->cv = $cv;
 
         return $this;
     }
