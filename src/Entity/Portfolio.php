@@ -27,7 +27,7 @@ class Portfolio
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'portfolio', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'portfolio', orphanRemoval: true, cascade: ['persist'])]
     private Collection $pictures;
 
     public function __construct()

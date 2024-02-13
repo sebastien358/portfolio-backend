@@ -49,6 +49,10 @@ class Picture
     #[ORM\JoinColumn(nullable: true)]
     private ?Cv $cv = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pictures')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Project $project = null;
+
     #[PrePersist]
     public function onPrePersist(): void
     {
@@ -145,6 +149,18 @@ class Picture
     public function setCv(?Cv $cv): static
     {
         $this->cv = $cv;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }
