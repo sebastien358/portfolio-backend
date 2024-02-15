@@ -16,11 +16,11 @@ class Picture
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['experience', 'techno', 'cv'])]
+    #[Groups(['experience', 'techno'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['experiences', 'techno', 'cv'])]
+    #[Groups(['experiences', 'techno'])]
     private ?string $fileName = null;
 
     #[ORM\Column]
@@ -44,10 +44,6 @@ class Picture
     #[ORM\ManyToOne(inversedBy: 'pictures')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Formation $formation = null;
-
-    #[ORM\ManyToOne(inversedBy: 'pictures')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Cv $cv = null;
 
     #[ORM\ManyToOne(inversedBy: 'pictures')]
     #[ORM\JoinColumn(nullable: true)]
@@ -137,18 +133,6 @@ class Picture
     public function setFormation(?Formation $formation): static
     {
         $this->formation = $formation;
-
-        return $this;
-    }
-
-    public function getCv(): ?Cv
-    {
-        return $this->cv;
-    }
-
-    public function setCv(?Cv $cv): static
-    {
-        $this->cv = $cv;
 
         return $this;
     }
