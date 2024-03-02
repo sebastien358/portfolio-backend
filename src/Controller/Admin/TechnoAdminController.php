@@ -9,6 +9,7 @@ use App\Repository\TechnoRepository;
 use App\Service\UploadProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -81,6 +82,19 @@ class TechnoAdminController extends AbstractController
         $data['pictures'] = $pictures;
 
         return new JsonResponse($data);
+    }
+
+    #[Route('/delete/{id}', methods: ['DELETE'])]
+    public function delete(Techno $techno): JsonResponse
+    {
+        $fileSystem = new Filesystem();
+
+        foreach ($techno->getPictures() as $picture) {
+            $fileSystem->remove($this->getParameter('picture_path') . $picture->getFileName());
+        }
+        $this->entityManager->remove($techno);
+        $this->entityManager->flush();
+        return new JsonResponse();
     }
 
     private function getErrorMessages($form): array
