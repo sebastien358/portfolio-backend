@@ -54,6 +54,9 @@ class Project
     #[Groups(['project', 'projects'])]
     private Collection $pictures;
 
+    #[ORM\Column(length: 255)]
+    private ?string $urlSite = null;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
@@ -173,6 +176,18 @@ class Project
                 $picture->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUrlSite(): ?string
+    {
+        return $this->urlSite;
+    }
+
+    public function setUrlSite(string $urlSite): static
+    {
+        $this->urlSite = $urlSite;
 
         return $this;
     }

@@ -19,7 +19,6 @@ class UserFixtures extends Fixture
         $user = new User();
 
         $user->setEmail('sebastienpetit27330@gmail.com');
-        $user->setRoles(['IS_AUTHENTICATED_FULLY']);
         $user->setPassword($this->userPasswordHasher->hashPassword(
             $user,
             '6bdpnvyjo9M5@'

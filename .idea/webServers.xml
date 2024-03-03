@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="4436fea0-a070-4218-a0c8-a5b42c96f6a9" name="ftp.cluster030.hosting.ovh.net" url="http://ftp.cluster030.hosting.ovh.net">
+        <fileTransfer rootFolder="/api" host="ftp.cluster030.hosting.ovh.net" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
