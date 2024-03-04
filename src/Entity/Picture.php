@@ -20,7 +20,7 @@ class Picture
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['experiences', 'techno'])]
+    #[Groups(['experience', 'techno'])]
     private ?string $fileName = null;
 
     #[ORM\Column]

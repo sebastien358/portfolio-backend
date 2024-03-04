@@ -9,6 +9,7 @@ use App\Repository\ProjectRepository;
 use App\Service\UploadProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -65,7 +66,7 @@ class ProjectAdminController extends AbstractController
 
         $pictures = [];
         foreach ($project->getPictures() as $picture) {
-            $pictures[] = $request->getUriForPath('/images/') . $picture->getFileName();
+            $pictures[] = ['id' => $picture->getId(), 'url' => $request->getUriForPath('/images/') . $picture->getFileName()];
         }
         $dataProjects['pictures'] = $pictures;
 
@@ -98,6 +99,32 @@ class ProjectAdminController extends AbstractController
         $dataProjects['pictures'] = $pictures;
 
         return new JsonResponse($dataProjects);
+    }
+
+    #[Route('/delete/{id}', methods: ['DELETE'])]
+    public function delete(Project $project): JsonResponse
+    {
+        $fileSystem = new Filesystem();
+
+        foreach ($project->getPictures() as $picture) {
+            $fileSystem->remove($this->getParameter('picture_path') . $picture->getFileName());
+        }
+        $this->entityManager->remove($project);
+        $this->entityManager->flush();
+
+        return new JsonResponse();
+    }
+
+    #[Route('/delete/picture/{id}', methods: ['DELETE'])]
+    public function picture(Picture $picture): JsonResponse
+    {
+        $fileSystem = new Filesystem();
+
+        $fileSystem->remove($this->getParameter('picture_path') . $picture->getFileName());
+        $this->entityManager->remove($picture);
+        $this->entityManager->flush();
+
+        return new JsonResponse();
     }
 
     private function getErrorMessages($form): array

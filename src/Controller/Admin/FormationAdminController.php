@@ -117,6 +117,18 @@ class FormationAdminController extends AbstractController
         return new JsonResponse();
     }
 
+    #[Route('/delete/picture/{id}', methods: ['DELETE'])]
+    public function picture(Picture $picture): JsonResponse
+    {
+        $fileSystem = new Filesystem();
+
+        $fileSystem->remove($this->getParameter('picture_path') . $picture->getFileName());
+        $this->entityManager->remove($picture);
+        $this->entityManager->flush();
+
+        return new JsonResponse();
+    }
+
     private function getErrorMessages($form): array
     {
         $errors = [];

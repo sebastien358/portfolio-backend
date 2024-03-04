@@ -9,6 +9,7 @@ use App\Repository\ExperienceRepository;
 use App\Service\UploadProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -67,7 +68,7 @@ class ExperienceAdminController extends AbstractController
 
         $pictures = [];
         foreach ($experience->getPictures() as $picture) {
-            $pictures[] = ['id' => $experience->getId(), 'url' => $request->getUriForPath('/images/') . $picture->getFileName()];
+            $pictures[] = ['id' => $picture->getId(), 'url' => $request->getUriForPath('/images/') . $picture->getFileName()];
         }
         $data['pictures'] = $pictures;
 
@@ -97,11 +98,37 @@ class ExperienceAdminController extends AbstractController
 
         $pictures = [];
         foreach ($experience->getPictures() as $picture) {
-            $pictures[] = ['id' => $experience->getId(), 'url' => $request->getUriForPath('/images/') . $picture->getFileName()];
+            $pictures[] = ['id' => $picture->getId(), 'url' => $request->getUriForPath('/images/') . $picture->getFileName()];
         }
         $data['pictures'] = $pictures;
 
         return new JsonResponse($data);
+    }
+
+    #[Route('/delete/{id}', methods: ['DELETE'])]
+    public function delete(Experience $experience): JsonResponse
+    {
+        $fileSystem = new Filesystem();
+
+        foreach ($experience->getPictures() as $picture) {
+            $fileSystem->remove($this->getParameter('picture_path') . $picture->getFileName());
+        }
+        $this->entityManager->remove($experience);
+        $this->entityManager->flush();
+
+        return new JsonResponse();
+    }
+
+    #[Route('/delete/picture/{id}', methods: ['DELETE'])]
+    public function picture(Picture $picture): JsonResponse
+    {
+        $fileSystem = new Filesystem();
+
+        $fileSystem->remove($this->getParameter('picture_path') . $picture->getFileName());
+        $this->entityManager->remove($picture);
+        $this->entityManager->flush();
+
+        return new JsonResponse();
     }
 
     private function getErrorMessages($form): array
